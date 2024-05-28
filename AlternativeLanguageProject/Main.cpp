@@ -8,11 +8,15 @@ int main() {
 	ReadCSV reader(filename);
 	std::unordered_map<int, Cell> data = reader.read();
 	const std::vector<std::string>& columnNames = reader.getColumnNames();
+	
+	std::string highestAveragePhoneWeight = reader.highestAveragePhoneWeight(data);
+	std::cout << "Highest Average Phone Weight: " << reader.highestAveragePhoneWeight(data) << std::endl;
 
-    for (int i = 0; i < data.size(); ++i) {
-		std::cout << "Cell " << i + 1 << ":" << std::endl;
-		std::cout << data[i].toString() << std::endl;
-    }
+	std::unordered_map<std::string, std::string> differentYear = reader.findDifferentYear(data);
+	std::cout << "Different Year: " << std::endl;	
+	for (const auto& pair : differentYear) {
+		std::cout << pair.first << ": " << pair.second << std::endl;
+	}
 
 	return 0;
 }

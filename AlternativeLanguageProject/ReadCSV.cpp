@@ -153,6 +153,35 @@ std::vector<Cell> ReadCSV::findByLaunchStatus(const std::string& status, const s
 	return result;
 }
 
+std::string ReadCSV::highestAveragePhoneWeight(std::unordered_map<int, Cell>& data) {
+	std::unordered_map<std::string, std::vector<float>> weights;
+	for (const auto& pair : data) {
+		weights[pair.second.getOem()].push_back(pair.second.getBodyWeight());
+	}
+	std::string result;
+	float maxWeight = 0.0f;
+	for (const auto& pair : weights) {
+		float mean = calculateMean(pair.second);
+		if (mean > maxWeight) {
+			maxWeight = mean;
+			result = pair.first;
+		}
+	}
+	return result;
+}
+
+std::unordered_map<std::string, std::string> ReadCSV::findDifferentYear(std::unordered_map<int, Cell>& data) {
+	std::unordered_map<std::string, std::string> result;
+	for (const auto& pair : data) {
+		std::string announcement = std::to_string(pair.second.getLaunchAnnounced());
+		std::string status = pair.second.getLaunchStatus();
+		if (status.find(announcement) == std::string::npos) {
+			result[pair.second.getOem()] = pair.second.getModel();
+		}
+	}
+	return result;
+}
+
 
 
 
