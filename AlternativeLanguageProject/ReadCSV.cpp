@@ -6,10 +6,11 @@
 #include <numeric>
 #include <set>
 
-
-
+// Constructor
 ReadCSV::ReadCSV(const std::string& filename): filename(filename) {}
 
+// Checks if a property has quotes around it to ignore commas inside the quotes.
+// Splits the line by commas and returns a vector of strings.
 std::vector<std::string> ReadCSV::splitCSVLine(const std::string& line) {
 	std::vector<std::string> result;
 	std::string field;
@@ -31,6 +32,7 @@ std::vector<std::string> ReadCSV::splitCSVLine(const std::string& line) {
 	return result;
 }
 
+// Parses the launch status to check if it is valid.
 std::string ReadCSV::parseLaunchStatus(const std::string& status) {
 	if (status == "Discontinued" || status == "Cancelled" || status.find("Available. Released") != std::string::npos) {
 		return status;
@@ -38,10 +40,12 @@ std::string ReadCSV::parseLaunchStatus(const std::string& status) {
 	return "";
 }
 
+// Checks if a string contains digits.
 bool ReadCSV::containsDigits(const std::string& str) {
 	return std::any_of(str.begin(), str.end(), ::isdigit);
 }
 
+// Checks if a string is a valid integer.
 bool ReadCSV::isValidInt(const std::string& str) {
 	if (str.empty() || str == "-" || !containsDigits(str)) return false;
 	try {
@@ -56,6 +60,7 @@ bool ReadCSV::isValidInt(const std::string& str) {
 	}
 }
 
+// Checks if a string is a valid float.
 bool ReadCSV::isValidFloat(const std::string& str) {
 	if (str.empty() || str == "-") return false;
 	try {
@@ -70,6 +75,7 @@ bool ReadCSV::isValidFloat(const std::string& str) {
 	}
 }
 
+// Reads the CSV file and returns a map of cells.
 std::unordered_map<int, Cell> ReadCSV::read() {
 	std::ifstream file(filename);
 	std::unordered_map<int, Cell> data;
@@ -125,10 +131,12 @@ std::unordered_map<int, Cell> ReadCSV::read() {
 	return data;
 }
 
+// Returns the column names.
 const std::vector<std::string>& ReadCSV::getColumnNames() const {
 	return columnNames;
 }
 
+// Calculates the mean of a vector of floats.
 float ReadCSV::calculateMean(const std::vector<float>& values) {
 	if (values.empty()) return 0.0f;
 	float sum = 0.0f;
@@ -138,11 +146,13 @@ float ReadCSV::calculateMean(const std::vector<float>& values) {
 	return sum / values.size();
 }
 
+// Returns a vector of unique values.
 std::vector<std::string> ReadCSV::getUniqueValues(const std::vector<std::string>& values) {
 	std::set<std::string> uniqueSet(values.begin(), values.end());
 	return std::vector<std::string>(uniqueSet.begin(), uniqueSet.end());
 }
 
+// Returns a vector of cells with a specific launch status.
 std::vector<Cell> ReadCSV::findByLaunchStatus(const std::string& status, const std::unordered_map<int, Cell>& data) const {
 	std::vector<Cell> result;
 	for (const auto& pair : data) {
@@ -153,6 +163,7 @@ std::vector<Cell> ReadCSV::findByLaunchStatus(const std::string& status, const s
 	return result;
 }
 
+// Returns the OEM with the highest average phone weight.
 std::string ReadCSV::highestAveragePhoneWeight(std::unordered_map<int, Cell>& data) {
 	std::unordered_map<std::string, std::vector<float>> weights;
 	for (const auto& pair : data) {
@@ -170,6 +181,7 @@ std::string ReadCSV::highestAveragePhoneWeight(std::unordered_map<int, Cell>& da
 	return result;
 }
 
+// Returns a map of OEMs with models that have a different year in the launch status.
 std::unordered_map<std::string, std::string> ReadCSV::findDifferentYear(std::unordered_map<int, Cell>& data) {
 	std::unordered_map<std::string, std::string> result;
 	for (const auto& pair : data) {
@@ -182,6 +194,7 @@ std::unordered_map<std::string, std::string> ReadCSV::findDifferentYear(std::uno
 	return result;
 }
 
+// Returns the number of phones with only one feature sensor.
 int ReadCSV::onlyOneFeatureSensor(std::unordered_map<int, Cell>& data) {
 	int count = 0;
 	for (const auto& pair : data) {
@@ -192,6 +205,7 @@ int ReadCSV::onlyOneFeatureSensor(std::unordered_map<int, Cell>& data) {
 	return count;
 }
 
+// Returns the year with the most phones.
 int ReadCSV::yearWithMostPhones(std::unordered_map<int, Cell>& data) {
 	std::unordered_map<int, int> yearCount;
 	for (const auto& pair : data) {
