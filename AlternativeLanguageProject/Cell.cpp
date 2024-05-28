@@ -1,7 +1,9 @@
 #include "Cell.h"
 
+// Default constructor
 Cell::Cell() : launch_announced(0), body_weight(0.0f), display_size(0.0f) {}
 
+// Constructor
 Cell::Cell(const std::string& oem, const std::string& model, int launch_announced, const std::string& launch_status,
 	const std::string& body_dimensions, float body_weight, const std::string& body_sim, const std::string& display_type, float display_size,
 	const std::string& display_resolution, const std::string& features_sensors, const std::string& platform_os) 
@@ -38,6 +40,7 @@ void Cell::setDisplayResolution(const std::string& display_resolution) { this->d
 void Cell::setFeaturesSensors(const std::string& features_sensors) { this->features_sensors = features_sensors; }
 void Cell::setPlatformOs(const std::string& platform_os) { this->platform_os = platform_os; }
 
+// Add data
 void Cell::addData(const std::string& oem, const std::string& model, int launch_announced, const std::string& launch_status,
     const std::string& body_dimensions, float body_weight, const std::string& body_sim, const std::string& display_type, float display_size,
     const std::string& display_resolution, const std::string& features_sensors, const std::string& platform_os) {
@@ -55,6 +58,7 @@ void Cell::addData(const std::string& oem, const std::string& model, int launch_
     setPlatformOs(platform_os);
 }
 
+// Convert to string
 std::string Cell::toString() const {
     std::stringstream ss;
     ss << "OEM: " << oem << ", " << std::endl
@@ -72,10 +76,12 @@ std::string Cell::toString() const {
     return ss.str();
 }
 
+// Check if the phone is heavy
 bool Cell::isHeavy() const{
     return this->body_weight > 200.0f;
 }
 
+// Clear the data
 void Cell::clear() {
     oem.clear();
     model.clear();
