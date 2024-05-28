@@ -20,6 +20,10 @@ public:
 	bool isValidFloat(const std::string& str);
     std::unordered_map<int, Cell> read();
     const std::vector<std::string>& getColumnNames() const;
+	float calculateMean(const std::vector<float>& values);
+	std::vector<std::string> getUniqueValues(const std::vector<std::string>& values);
+	std::vector<Cell> findByLaunchStatus(const std::string& status, std::unordered_map<int, Cell>& data) const;
+
 
 
 private:

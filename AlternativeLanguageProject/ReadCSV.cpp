@@ -3,6 +3,8 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <numeric>
+#include <set>
 
 
 
@@ -10,15 +12,11 @@ ReadCSV::ReadCSV(const std::string& filename): filename(filename) {}
 
 std::vector<std::string> ReadCSV::splitCSVLine(const std::string& line) {
 	std::vector<std::string> result;
-	std::stringstream ss(line);
-	std::string value;
-	bool insideQuote = false;
-	char ch;
 	std::string field;
+	bool insideQuote = false;
 
-	for (size_t i = 0; i < line.size(); ++i) {
-		ch = line[i];
-		if (ch == '"' && (i == 0 || line[i - 1] != '\\')) {
+	for (char ch : line) {
+		if (ch == '"' && (field.empty() || field.back() != '\\')) {
 			insideQuote = !insideQuote;
 		}
 		else if (ch == ',' && !insideQuote) {
@@ -129,6 +127,30 @@ std::unordered_map<int, Cell> ReadCSV::read() {
 
 const std::vector<std::string>& ReadCSV::getColumnNames() const {
 	return columnNames;
+}
+
+float ReadCSV::calculateMean(const std::vector<float>& values) {
+	if (values.empty()) return 0.0f;
+	float sum = 0.0f;
+	for (float value : values) {
+		sum += value;
+	}
+	return sum / values.size();
+}
+
+std::vector<std::string> ReadCSV::getUniqueValues(const std::vector<std::string>& values) {
+	std::set<std::string> uniqueSet(values.begin(), values.end());
+	return std::vector<std::string>(uniqueSet.begin(), uniqueSet.end());
+}
+
+std::vector<Cell> ReadCSV::findByLaunchStatus(const std::string& status, const std::unordered_map<int, Cell>& data) const {
+	std::vector<Cell> result;
+	for (const auto& pair : data) {
+		if (pair.second.getLaunchStatus() == status) {
+			result.push_back(pair.second);
+		}
+	}
+	return result;
 }
 
 

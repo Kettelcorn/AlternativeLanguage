@@ -38,6 +38,23 @@ void Cell::setDisplayResolution(const std::string& display_resolution) { this->d
 void Cell::setFeaturesSensors(const std::string& features_sensors) { this->features_sensors = features_sensors; }
 void Cell::setPlatformOs(const std::string& platform_os) { this->platform_os = platform_os; }
 
+void Cell::addData(const std::string& oem, const std::string& model, int launch_announced, const std::string& launch_status,
+    const std::string& body_dimensions, float body_weight, const std::string& body_sim, const std::string& display_type, float display_size,
+    const std::string& display_resolution, const std::string& features_sensors, const std::string& platform_os) {
+    setOem(oem);
+    setModel(model);
+    setLaunchAnnounced(launch_announced);
+    setLaunchStatus(launch_status);
+    setBodyDimensions(body_dimensions);
+    setBodyWeight(body_weight);
+    setBodySim(body_sim);
+    setDisplayType(display_type);
+    setDisplaySize(display_size);
+    setDisplayResolution(display_resolution);
+    setFeaturesSensors(features_sensors);
+    setPlatformOs(platform_os);
+}
+
 std::string Cell::toString() const {
     std::stringstream ss;
     ss << "OEM: " << oem << ", " << std::endl
@@ -54,3 +71,23 @@ std::string Cell::toString() const {
         << "Platform OS: " << platform_os << std::endl;
     return ss.str();
 }
+
+bool Cell::isHeavy() const{
+    return this->body_weight > 200.0f;
+}
+
+void Cell::clear() {
+    oem.clear();
+    model.clear();
+    launch_announced = 0;
+    launch_status.clear();
+    body_dimensions.clear();
+    body_weight = 0.0f;
+    body_sim.clear();
+    display_type.clear();
+    display_size = 0.0f;
+    display_resolution.clear();
+    features_sensors.clear();
+    platform_os.clear();
+}
+

@@ -40,7 +40,12 @@ public:
     void setFeaturesSensors(const std::string& features_sensors);
     void setPlatformOs(const std::string& platform_os);
 
+    void addData(const std::string& oem, const std::string& model, int launch_announced, const std::string& launch_status,
+        const std::string& body_dimensions, float body_weight, const std::string& body_sim, const std::string& display_type, float display_size,
+        const std::string& display_resolution, const std::string& features_sensors, const std::string& platform_os);
     std::string toString() const;
+	bool isHeavy() const;
+    void clear();
 
 private:
     std::string oem;
