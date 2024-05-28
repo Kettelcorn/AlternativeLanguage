@@ -182,6 +182,34 @@ std::unordered_map<std::string, std::string> ReadCSV::findDifferentYear(std::uno
 	return result;
 }
 
+int ReadCSV::onlyOneFeatureSensor(std::unordered_map<int, Cell>& data) {
+	int count = 0;
+	for (const auto& pair : data) {
+		if (pair.second.getFeaturesSensors().find(",") == std::string::npos && !pair.second.getFeaturesSensors().empty()) {
+			count++;
+		}
+	}
+	return count;
+}
+
+int ReadCSV::yearWithMostPhones(std::unordered_map<int, Cell>& data) {
+	std::unordered_map<int, int> yearCount;
+	for (const auto& pair : data) {
+		if (pair.second.getLaunchAnnounced() > 1999) {
+			yearCount[pair.second.getLaunchAnnounced()]++;
+		}
+	}
+	int maxCount = 0;
+	int year = 0;
+	for (const auto& pair : yearCount) {
+		if (pair.second > maxCount) {
+			maxCount = pair.second;
+			year = pair.first;
+		}
+	}
+	return year;
+}
+
 
 
 
